@@ -30,7 +30,7 @@ Performs:
 
 ---
 
-## 🚀 How to Compile and Run
+##  How to Compile and Run
 
 1️⃣ **Compile:**
 ```bash
@@ -38,4 +38,4 @@ gcc calculator.c -o calculator -lm
 
 lm needed to link math library
 
-Use any C compilers to run the program.
+Use any C compilers to run.
