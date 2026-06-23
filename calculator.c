@@ -1,195 +1,256 @@
-#define _USE_MATH_DEFINES
 #include <stdio.h>
 #include <math.h>
+#include <stdlib.h>
 
-// Define M_PI if not defined
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
+// Function prototypes
+void simpleCalculator();
+void quadraticSolver();
+void matrixAddition();
+void scientificCalculator();
+void displayMenu();
 
-// Simple Calculator
-void simple_calculator() {
-    double a, b;
-    char op;
-    printf("Enter expression (e.g., 4 + 5): ");
-    scanf("%lf %c %lf", &a, &op, &b);
-    switch(op) {
-        case '+': printf("Result: %.2lf\n", a + b); break;
-        case '-': printf("Result: %.2lf\n", a - b); break;
-        case '*': printf("Result: %.2lf\n", a * b); break;
-        case '/': 
-            if(b != 0) printf("Result: %.2lf\n", a / b);
-            else printf("Error: Division by zero.\n");
-            break;
-        case '%':
-            if((int)b != 0)
-                printf("Result: %d\n", (int)a % (int)b);
-            else
-                printf("Error: Modulo by zero.\n");
-            break;
-        default: printf("Invalid operator.\n");
-    }
-}
-
-// Quadratic Equation Solver
-void quadratic_solver() {
-    double a, b, c, discriminant, root1, root2;
-    printf("Enter coefficients a, b, c: ");
-    scanf("%lf %lf %lf", &a, &b, &c);
-    
-    // Handle case when a = 0
-    if(a == 0) {
-        if(b == 0) {
-            printf(c == 0 ? "Infinite solutions.\n" : "No solution.\n");
-        } else {
-            printf("Linear equation root: %.2lf\n", -c / b);
-        }
-        return;
-    }
-    
-    discriminant = b*b - 4*a*c;
-    if(discriminant > 0) {
-        root1 = (-b + sqrt(discriminant)) / (2*a);
-        root2 = (-b - sqrt(discriminant)) / (2*a);
-        printf("Roots are real: %.2lf and %.2lf\n", root1, root2);
-    } else if(discriminant == 0) {
-        root1 = -b / (2*a);
-        printf("Roots are equal: %.2lf\n", root1);
-    } else {
-        double real = -b / (2*a);
-        double imag = sqrt(-discriminant) / (2*a);
-        printf("Roots are complex: %.2lf + %.2lfi and %.2lf - %.2lfi\n", 
-               real, imag, real, imag);
-    }
-}
-
-// Matrix Addition
-void matrix_addition() {
-    int r, c, i, j;
-    printf("Enter rows and columns: ");
-    scanf("%d %d", &r, &c);
-    
-    if(r <= 0 || c <= 0) {
-        printf("Error: Invalid matrix dimensions!\n");
-        return;
-    }
-    
-    int a[r][c], b[r][c], sum[r][c];
-
-    printf("Enter elements of first matrix:\n");
-    for(i=0;i<r;i++)
-        for(j=0;j<c;j++)
-            scanf("%d", &a[i][j]);
-
-    printf("Enter elements of second matrix:\n");
-    for(i=0;i<r;i++)
-        for(j=0;j<c;j++)
-            scanf("%d", &b[i][j]);
-
-    printf("Sum of matrices:\n");
-    for(i=0;i<r;i++) {
-        for(j=0;j<c;j++) {
-            sum[i][j] = a[i][j] + b[i][j];
-            printf("%d ", sum[i][j]);
-        }
-        printf("\n");
-    }
-}
-
-// Scientific Calculator
-void scientific_calculator() {
-    int choice;
-    double value, value2;
-    printf("\n--- Scientific Calculator ---\n");
-    printf("1. sin\n2. cos\n3. tan\n4. sqrt\n5. power\n");
-    printf("Enter your choice: ");
-    scanf("%d", &choice);
-
-    switch(choice) {
-        case 1:
-            printf("Enter value in degrees: ");
-            scanf("%lf", &value);
-            printf("sin(%.2lf°) = %.4lf\n", value, sin(value * M_PI / 180));
-            break;
-        case 2:
-            printf("Enter value in degrees: ");
-            scanf("%lf", &value);
-            printf("cos(%.2lf°) = %.4lf\n", value, cos(value * M_PI / 180));
-            break;
-        case 3:
-            printf("Enter value in degrees: ");
-            scanf("%lf", &value);
-            double cos_val = cos(value * M_PI / 180);
-            if(fabs(cos_val) < 1e-10)
-                printf("tan(%.2lf°) is undefined\n", value);
-            else
-                printf("tan(%.2lf°) = %.4lf\n", value, tan(value * M_PI / 180));
-            break;
-        case 4:
-            printf("Enter value: ");
-            scanf("%lf", &value);
-            if(value >= 0)
-                printf("sqrt(%.2lf) = %.4lf\n", value, sqrt(value));
-            else
-                printf("Error: Negative value.\n");
-            break;
-        case 5:
-            printf("Enter base and exponent: ");
-            scanf("%lf %lf", &value, &value2);
-            printf("%.2lf ^ %.2lf = %.4lf\n", value, value2, pow(value, value2));
-            break;
-        default:
-            printf("Invalid choice.\n");
-    }
-}
-
-// Main function with menu
 int main() {
     int choice;
     
     do {
-        printf("\n========================================\n");
-        printf("    MULTI-UTILITY CALCULATOR\n");
-        printf("========================================\n");
-        printf("1. Basic Calculator\n");
-        printf("2. Quadratic Equation Solver\n");
-        printf("3. Matrix Addition\n");
-        printf("4. Scientific Calculator\n");
-        printf("0. Exit\n");
-        printf("========================================\n");
-        printf("Enter your choice: ");
+        displayMenu();
+        printf("Enter your choice (1-5, 0 to exit): ");
         scanf("%d", &choice);
         
         switch(choice) {
-            case 1:
-                printf("\n--- Basic Calculator ---\n");
-                simple_calculator();
-                break;
-            case 2:
-                printf("\n--- Quadratic Solver ---\n");
-                quadratic_solver();
-                break;
-            case 3:
-                printf("\n--- Matrix Addition ---\n");
-                matrix_addition();
-                break;
-            case 4:
-                scientific_calculator();
-                break;
-            case 0:
-                printf("\nThank you for using the calculator!\n");
-                break;
-            default:
-                printf("\nInvalid choice! Please try again.\n");
+            case 1: simpleCalculator(); break;
+            case 2: quadraticSolver(); break;
+            case 3: matrixAddition(); break;
+            case 4: scientificCalculator(); break;
+            case 0: printf("\nThank you for using the calculator!\n"); break;
+            default: printf("Invalid choice! Please try again.\n");
         }
         
         if(choice != 0) {
             printf("\nPress Enter to continue...");
-            getchar(); // Clear newline
+            getchar(); // Consume newline
             getchar(); // Wait for user input
+            // REMOVED system("clear") - Now output stays on screen
         }
-        
     } while(choice != 0);
     
     return 0;
+}
+
+void displayMenu() {
+    printf("\n========== MULTI-UTILITY CALCULATOR ==========\n");
+    printf("1. Simple Calculator (+, -, *, /, %%)\n");
+    printf("2. Quadratic Equation Solver\n");
+    printf("3. Matrix Addition\n");
+    printf("4. Scientific Calculator\n");
+    printf("0. Exit\n");
+    printf("===============================================\n");
+}
+
+// ========== 1. SIMPLE CALCULATOR ==========
+void simpleCalculator() {
+    double num1, num2, result;
+    char operator;
+    
+    printf("\n--- SIMPLE CALCULATOR ---\n");
+    printf("Enter expression (e.g., 5 + 3): ");
+    scanf("%lf %c %lf", &num1, &operator, &num2);
+    
+    switch(operator) {
+        case '+': 
+            result = num1 + num2;
+            printf("\n✅ %.2lf + %.2lf = %.2lf\n", num1, num2, result);
+            break;
+        case '-': 
+            result = num1 - num2;
+            printf("\n✅ %.2lf - %.2lf = %.2lf\n", num1, num2, result);
+            break;
+        case '*': 
+            result = num1 * num2;
+            printf("\n✅ %.2lf * %.2lf = %.2lf\n", num1, num2, result);
+            break;
+        case '/':
+            if(num2 != 0) {
+                result = num1 / num2;
+                printf("\n✅ %.2lf / %.2lf = %.2lf\n", num1, num2, result);
+            } else {
+                printf("\n❌ Error: Division by zero!\n");
+            }
+            break;
+        case '%':
+            if((int)num2 != 0) {
+                result = (int)num1 % (int)num2;
+                printf("\n✅ %.0lf %% %.0lf = %.0lf\n", num1, num2, result);
+            } else {
+                printf("\n❌ Error: Modulo by zero!\n");
+            }
+            break;
+        default:
+            printf("\n❌ Invalid operator!\n");
+    }
+}
+
+// ========== 2. QUADRATIC EQUATION SOLVER ==========
+void quadraticSolver() {
+    double a, b, c, discriminant, root1, root2, realPart, imagPart;
+    
+    printf("\n--- QUADRATIC EQUATION SOLVER ---\n");
+    printf("Enter coefficients a, b, c (ax^2 + bx + c = 0): ");
+    scanf("%lf %lf %lf", &a, &b, &c);
+    
+    if(a == 0) {
+        printf("\n❌ This is not a quadratic equation (a cannot be 0)\n");
+        return;
+    }
+    
+    discriminant = b*b - 4*a*c;
+    
+    printf("\n📐 Equation: %.2lfx² + %.2lfx + %.2lf = 0\n", a, b, c);
+    
+    if(discriminant > 0) {
+        root1 = (-b + sqrt(discriminant)) / (2*a);
+        root2 = (-b - sqrt(discriminant)) / (2*a);
+        printf("✅ Two distinct real roots:\n");
+        printf("   Root 1 = %.2lf\n", root1);
+        printf("   Root 2 = %.2lf\n", root2);
+    } else if(discriminant == 0) {
+        root1 = -b / (2*a);
+        printf("✅ One repeated real root:\n");
+        printf("   Root = %.2lf\n", root1);
+    } else {
+        realPart = -b / (2*a);
+        imagPart = sqrt(-discriminant) / (2*a);
+        printf("✅ Two complex roots:\n");
+        printf("   Root 1 = %.2lf + %.2lfi\n", realPart, imagPart);
+        printf("   Root 2 = %.2lf - %.2lfi\n", realPart, imagPart);
+    }
+}
+
+// ========== 3. MATRIX ADDITION ==========
+void matrixAddition() {
+    int rows, cols, i, j;
+    
+    printf("\n--- MATRIX ADDITION ---\n");
+    printf("Enter number of rows and columns: ");
+    scanf("%d %d", &rows, &cols);
+    
+    int matrix1[rows][cols], matrix2[rows][cols], sum[rows][cols];
+    
+    printf("\n📊 Enter elements of FIRST matrix:\n");
+    for(i = 0; i < rows; i++) {
+        for(j = 0; j < cols; j++) {
+            printf("  Matrix1[%d][%d] = ", i+1, j+1);
+            scanf("%d", &matrix1[i][j]);
+        }
+    }
+    
+    printf("\n📊 Enter elements of SECOND matrix:\n");
+    for(i = 0; i < rows; i++) {
+        for(j = 0; j < cols; j++) {
+            printf("  Matrix2[%d][%d] = ", i+1, j+1);
+            scanf("%d", &matrix2[i][j]);
+        }
+    }
+    
+    // Adding matrices
+    for(i = 0; i < rows; i++) {
+        for(j = 0; j < cols; j++) {
+            sum[i][j] = matrix1[i][j] + matrix2[i][j];
+        }
+    }
+    
+    printf("\n✅ Resultant Matrix (Sum):\n");
+    printf("   ");
+    for(i = 0; i < rows; i++) {
+        for(j = 0; j < cols; j++) {
+            printf("%5d ", sum[i][j]);
+        }
+        printf("\n   ");
+    }
+    printf("\n");
+}
+
+// ========== 4. SCIENTIFIC CALCULATOR ==========
+void scientificCalculator() {
+    int choice;
+    double num, result, base, exponent;
+    
+    printf("\n--- SCIENTIFIC CALCULATOR ---\n");
+    printf("1. Sine (sin)\n");
+    printf("2. Cosine (cos)\n");
+    printf("3. Tangent (tan)\n");
+    printf("4. Square Root (sqrt)\n");
+    printf("5. Power (x^y)\n");
+    printf("6. Log10 (base 10)\n");
+    printf("7. Natural Log (ln)\n");
+    printf("Enter your choice (1-7): ");
+    scanf("%d", &choice);
+    
+    switch(choice) {
+        case 1:
+            printf("Enter angle in degrees: ");
+            scanf("%lf", &num);
+            result = sin(num * M_PI / 180);
+            printf("\n✅ sin(%.2lf°) = %.6lf\n", num, result);
+            break;
+            
+        case 2:
+            printf("Enter angle in degrees: ");
+            scanf("%lf", &num);
+            result = cos(num * M_PI / 180);
+            printf("\n✅ cos(%.2lf°) = %.6lf\n", num, result);
+            break;
+            
+        case 3:
+            printf("Enter angle in degrees: ");
+            scanf("%lf", &num);
+            result = tan(num * M_PI / 180);
+            printf("\n✅ tan(%.2lf°) = %.6lf\n", num, result);
+            break;
+            
+        case 4:
+            printf("Enter a number: ");
+            scanf("%lf", &num);
+            if(num >= 0) {
+                result = sqrt(num);
+                printf("\n✅ sqrt(%.2lf) = %.6lf\n", num, result);
+            } else {
+                printf("\n❌ Error: Cannot calculate square root of negative number!\n");
+            }
+            break;
+            
+        case 5:
+            printf("Enter base: ");
+            scanf("%lf", &base);
+            printf("Enter exponent: ");
+            scanf("%lf", &exponent);
+            result = pow(base, exponent);
+            printf("\n✅ %.2lf ^ %.2lf = %.6lf\n", base, exponent, result);
+            break;
+            
+        case 6:
+            printf("Enter a number: ");
+            scanf("%lf", &num);
+            if(num > 0) {
+                result = log10(num);
+                printf("\n✅ log10(%.2lf) = %.6lf\n", num, result);
+            } else {
+                printf("\n❌ Error: Log10 of non-positive number!\n");
+            }
+            break;
+            
+        case 7:
+            printf("Enter a number: ");
+            scanf("%lf", &num);
+            if(num > 0) {
+                result = log(num);
+                printf("\n✅ ln(%.2lf) = %.6lf\n", num, result);
+            } else {
+                printf("\n❌ Error: Natural log of non-positive number!\n");
+            }
+            break;
+            
+        default:
+            printf("\n❌ Invalid choice!\n");
+    }
 }
